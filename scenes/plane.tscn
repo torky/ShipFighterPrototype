@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpl77g1uxw2n8"]
+
+[ext_resource type="Material" uid="uid://cvjgv6l8gsla4" path="res://assets/floor_material.tres" id="1_r1ilm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k6bwt"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hkhjq"]
+
+[node name="Plane" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_k6bwt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+material_override = ExtResource("1_r1ilm")
+mesh = SubResource("PlaneMesh_hkhjq")
