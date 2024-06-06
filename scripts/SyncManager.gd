@@ -17,7 +17,7 @@ func get_commands_for_timestamp(deltas):
 		elif current_timestamp < last_processed_deltas:
 			break
 			#print("command retrieved: " + str(server_time) + "," + str(timestamp) + "," + str(diff_client) + "," + str(current_timestamp))
-	last_processed_deltas = deltas
+	last_processed_deltas = diff_deltas
 	return new_commands
 
 # this will need to be updated to handle redundant commands
@@ -29,9 +29,6 @@ func add_commands(last_10_commands):
 
 func add_command(command):
 	var index = commands.size()
-	if last_processed_deltas > command.timestamp:
-		# This means we have a command that arrived too late
-		print("add_command - Last processed: " + str(last_processed_deltas) + ", command: " + str(command.timestamp))
 	for i in range(commands.size() - 1, -1, -1):
 		if commands[i].timestamp > command.timestamp or commands[i].index > command.index:
 			if (commands[i].index < command.index):
@@ -42,6 +39,9 @@ func add_command(command):
 			return
 		else:
 			break
+	if last_processed_deltas > command.timestamp:
+		# This means we have a command that arrived too late
+		print("add_command - Last processed: " + str(last_processed_deltas) + ", command: " + str(command.timestamp))
 	commands.insert(index, command)
 	#print("command inserted " + str(multiplayer.get_unique_id()))
 	#print(command)
