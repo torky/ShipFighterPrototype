@@ -7,6 +7,7 @@ var move_speed = 5.0
 var rotation_speed = 2.0
 var up_speed = 1
 var gravity = .5 # ProjectSettings.get_setting("physics/3d/default_gravity")
+var rotation_direction = 0
 
 func handle_input(delta):
 	# Handle floating.
@@ -46,19 +47,38 @@ func handle_input(delta):
 	move_and_slide()
 	
 func handle_rotation(delta):
-	var input_turn = 0
-	if Input.is_action_pressed("ui_left"):
-		input_turn = 1
-	if Input.is_action_pressed("ui_right"):
-		input_turn = -1
-	
 	# Apply the rotation
-	rotation.y += input_turn * rotation_speed * delta
+	rotation.y += rotation_direction * rotation_speed * delta
 	move_and_slide()
+
+func handle_command(command):
+	match command.command:
+		"rotate_right":
+			rotation_direction-=1
+			if rotation_direction < -1:
+				rotation_direction = -1
+		"rotate_left":
+			rotation_direction+=1
+			if rotation_direction > 1:
+				rotation_direction = 1
 
 func _physics_process(delta):
 	handle_rotation(delta)
-	if Input.is_action_pressed("ui_up"):
-		SyncManager.send_command.rpc_id(1, { "command": "spawn_box"})
+	#if Input.is_action_just_pressed("ui_left"):
+		#SyncManager.send_command_to_server({ "command": "rotate_left"})
+	#if Input.is_action_just_released("ui_left"):
+		#SyncManager.send_command_to_server({ "command": "rotate_left"})
+	#if Input.is_action_pressed("ui_right"):
+		#SyncManager.send_command_to_server({ "command": "rotate_right"})
+	#if Input.is_action_pressed("ui_up"):
+		#SyncManager.send_command_to_server({ "command": "spawn_box"})
 	
+func _input(event: InputEvent):
+	# not event.pressed means released
+	if event.is_action_released("ui_left"):
+		SyncManager.send_command_to_server({ "command": "rotate_left"})
+	if event.is_action_released("ui_right"):
+		SyncManager.send_command_to_server({ "command": "rotate_right"})
+	if event.is_action_released("ui_up"):
+		SyncManager.send_command_to_server({ "command": "spawn_box"})
 

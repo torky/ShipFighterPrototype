@@ -3,6 +3,8 @@ extends Node
 var last_processed_deltas = 0
 var commands = []
 
+# currently only designed for one global call instead of many calls
+# we could enable it for a more global system, but I'm not sure that's what I want.
 func get_commands_for_timestamp(deltas):
 	if last_processed_deltas > deltas:
 		print("get_commands - Last processed: " + str(last_processed_deltas) + ", command: " + str(deltas))
@@ -66,3 +68,5 @@ func send_command(command):
 	else:
 		print("command not sent to server")
 
+func send_command_to_server(command):
+	SyncManager.send_command.rpc_id(1, command)

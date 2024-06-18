@@ -27,9 +27,13 @@ func _physics_process(delta):
 	if deltas % 10 == 0: 
 		var commands = SyncManager.get_commands_for_timestamp(deltas)
 		for command in commands:
-			if command.command == "spawn_box":
-				#print("Time: " + str(deltas) + ", " + str(command.timestamp) + ", " + str(time_lapsed))
-				spawn_box()
+			match command.command:
+				"spawn_box":
+					#print("Time: " + str(deltas) + ", " + str(command.timestamp) + ", " + str(time_lapsed))
+					spawn_box()
+				_:
+					$Player.handle_command(command)
+					
 	
 func spawn_box():
 	#print("spawn box for " + str(multiplayer.get_unique_id()))

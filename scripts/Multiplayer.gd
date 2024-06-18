@@ -89,7 +89,7 @@ func _on_join_button_down():
 	# create new multiplayer peer
 	peer = ENetMultiplayerPeer.new()
 	# connect to host
-	peer.create_client(server_address, port)
+	peer.create_client(host_address, port)
 	# get host
 	peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
 	multiplayer.set_multiplayer_peer(peer)
