@@ -81,4 +81,3 @@ func _input(event: InputEvent):
 		SyncManager.send_command_to_server({ "command": "rotate_right"})
 	if event.is_action_released("ui_up"):
 		SyncManager.send_command_to_server({ "command": "spawn_box"})
-
