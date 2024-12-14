@@ -23,7 +23,7 @@ func get_commands_for_timestamp(deltas):
 	return new_commands
 
 # this will need to be updated to handle redundant commands
-@rpc ("any_peer", "call_local", "unreliable")	
+@rpc("any_peer", "call_local", "unreliable")
 func add_commands(last_10_commands):
 	#print(last_10_commands)
 	for command in last_10_commands:
@@ -51,18 +51,18 @@ func add_command(command):
 var server_commands = []
 var sequence_number = 0
 # This is server code, for now all it does is send back the command to the clients.
-@rpc ("any_peer", "call_local", "unreliable")
+@rpc("any_peer", "call_local", "unreliable")
 func send_command(command):
 	if multiplayer.is_server():
 		command.timestamp = GameManager.Game.deltas
 		command.visited = false
 		command.index = sequence_number
-		sequence_number+=1
+		sequence_number += 1
 		server_commands.push_front(command)
 		print("server received command " + str(command.timestamp))
 		var last_10_commands = []
-		var range = mini(10, server_commands.size())
-		for i in range:
+		var last10 = mini(10, server_commands.size())
+		for i in last10:
 			last_10_commands.push_front(server_commands[i])
 		add_commands.rpc(last_10_commands)
 	else:
